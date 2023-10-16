@@ -12,7 +12,6 @@ int main() {
             if (arr[j] == temp) {
                 printf("duplicate of %d found\n", temp);
             }
-
         }
     }
     return 0;
