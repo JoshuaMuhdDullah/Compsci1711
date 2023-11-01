@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include <stdbool.h>
+
 // Define an appropriate struct
 typedef struct {
 	char date[11];
@@ -10,8 +12,6 @@ typedef struct {
 } FITNESS_DATA;
 
 // Define any additional variables here
-
-
 
 // This is your helper function. Do not change it in any way.
 // Inputs: character array representing a row; the delimiter character
@@ -45,11 +45,12 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 // Complete the main function
 int main() {
+
     //declaring varaibles
-    int numRec = 0, row = 0, column = 0;
-    char date[10], time[5], steps[4];
-    char buffer[100];
-    FITNESS_DATA data;
+    int count = 0;
+    char date[11], time[6], steps[4];
+    char buffer[21], value[21];
+    FITNESS_DATA outputData[3];
 
     //open file
     char filename[] = "FitnessData_2023.csv";
@@ -63,20 +64,39 @@ int main() {
     //read file
     while (fgets(buffer, 100, file) != NULL)
     {   
-        char *token;
-        token = strtok(buffer, ",");
-        while(token != NULL)
-        {
-            printf("%s\n", token);
-            token = strtok(NULL, ",");
+        if (count < 3)
+        {   
+            //copy values from buffer to variable to handled
+            strcpy(value,buffer);
+
+            //strip string
+            for (int i = 0; i < 21; i++)
+            {   
+                if (value[i] == '\r')
+                {
+                    value[i] = '\0';
+                }
+            }
+
+            //tokenise record
+            tokeniseRecord(value,",",date,time,steps);
+
+            //copy values over to struc list
+            strcpy(outputData[count].date,date);
+            strcpy(outputData[count].time,time);
+            outputData[count].steps = atoi(steps);   
         }
-
-
-        numRec++;
+        count++;
     }
 
-    printf("Number of records in file: %d\n",numRec);
+    //print
+    printf("Number of records in file: %d\n",count);
+    for (int i = 0; i < 3; i++)
+    {
+        printf("%s/%s/%d\n",outputData[i].date,outputData[i].time,outputData[i].steps);
+    }
 
+    //close file
     fclose(file);   
     return 0;
 }
