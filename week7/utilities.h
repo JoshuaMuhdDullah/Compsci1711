@@ -149,12 +149,11 @@ float find_mean(reading* dataArray, int numReadings)
 float find_highest(reading* dataArray, int numReadings)
 {
     // to do
-    float highest = 0;
+    float highest = 0.0;
     for (int i = 0; i < numReadings; i++)
-    {
-        if (dataArray[i].bloodIron > highest);
+    {   
+        if (dataArray[i].bloodIron > highest)
         {   
-            printf("%f", highest);
             highest = dataArray[i].bloodIron;
         }
     }
@@ -175,7 +174,7 @@ float find_lowest(reading* dataArray, int numReadings)
     float lowest = 9999;
     for (int i = 0; i < numReadings; i++)
     {
-        if (dataArray[i].bloodIron < lowest && dataArray[i].bloodIron != 0);
+        if (dataArray[i].bloodIron < lowest && dataArray[i].bloodIron != 0)
         {
             lowest = dataArray[i].bloodIron;
         }
@@ -194,4 +193,18 @@ float find_lowest(reading* dataArray, int numReadings)
 void monthly_iron(reading* dataArray, int numReadings)
 {
     // to do
+    const char month[3];
+    const char temp[3];
+    printf("Select Month (first three letters): ");
+    scanf("%s",month);
+
+    for (int i = 0; i < numReadings; i++) 
+    {   
+        temp = strstr(dataArray[i].date, month)
+        if (temp != NULL)
+        {
+            printf("%.2f\n",dataArray[i].)
+        }
+        
+    }
 }

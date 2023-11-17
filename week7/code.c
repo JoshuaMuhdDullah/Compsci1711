@@ -40,7 +40,7 @@ int main()
 
         // this gets rid of the newline character which the user will enter
         // as otherwise this will stay in the stdin and be read next time
-        while (getchar() != '\n');
+        while (getchar() != '\n')
 
 
         // switch statement to control the menu.
@@ -76,11 +76,12 @@ int main()
             counter = read_file(input, daily_readings);
             float highest = find_highest(daily_readings, counter);
             printf("Your highest blood iron was %.2f\n", highest);
-            fclose(input);
             break;
 
         case 'E':
         case 'e':
+            counter = read_file(input, daily_readings);
+            monthly_iron(daily_readings, counter);
             return 0;
             break;
 
