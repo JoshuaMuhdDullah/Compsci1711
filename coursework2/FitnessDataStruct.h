@@ -17,6 +17,12 @@ typedef struct {
 	int steps;
 } FITNESS_DATA;
 
+// Struct for start and end pointers
+typedef struct {
+	int start;
+	int end;
+} POINTERS;
+
 // Helper function prototypes
 void tokeniseRecord(const char *input, const char *delimiter, char *date, char *time, char *steps);
 

@@ -103,14 +103,47 @@ int largeststeps(FITNESS_DATA *dataarray, int totalrecords)
 
 int meansteps(FITNESS_DATA *dataarray, int totalrecords)
 {
-    int total;
+    // Initialize elements
+    int total = 0;
+    int mean;
+    // Sum all steps
     for (int i =  0; i < totalrecords; i++)
     {
-        total += dataarray[i].steps;
+        total = total + dataarray[i].steps;
+        printf("%d\n", total);
     }
-    return total/totalrecords;
+    // Calculate mean
+    mean = total/totalrecords;
+    return mean;
 }
 
+POINTERS longeststreak(FITNESS_DATA *dataarray, int totalrecords)
+{   
+
+    // Start and end pointers
+    int start, end;
+    // Return variable
+    POINTERS maxstreak;
+    // Current streak and longest streak recorded
+    int currentstreak = 0, topstreak = 0;
+    // Loop through list counting streak
+    for (int i =  0; i < totalrecords; i++)
+    {    
+        start = i;
+        while (dataarray[i].steps > 500)
+        {   
+            currentstreak++;
+            end = i;
+            i++;
+        }
+        if (currentstreak > topstreak)
+        {
+            maxstreak.start = start;
+            maxstreak.end = end;
+        }
+        return maxstreak;
+    }
+}
 // Complete the main function
 int main() 
 {
@@ -118,7 +151,8 @@ int main()
     int counter = 0;
     int index;
     int mean;
-
+    POINTERS maxstreak;
+    
     while(1) 
     {
 
@@ -168,11 +202,15 @@ int main()
         case 'e':
             counter = readfile(file, dataarray);
             mean = meansteps(dataarray, counter);
-            printf("Mean step count: %d", mean);
+            printf("Mean step count: %d\n", mean);
             break;
 
         case 'F':
         case 'f':
+            counter = readfile(file, dataarray);
+            longeststreak(dataarray, counter);
+            printf("Longest period start: %s %s\n", dataarray[maxstreak.start].date, dataarray[maxstreak.start].time);
+            printf("Longest period end: %s %s\n", dataarray[maxstreak.end].date, dataarray[maxstreak.end].time);
             break;
 
         case 'Q':
