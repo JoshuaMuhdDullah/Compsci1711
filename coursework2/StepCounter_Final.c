@@ -41,36 +41,83 @@ void tokeniseRecord(const char *input, const char *delimiter,
 
 FILE *openfile(char *filename, char *mode)
 {
-    // to do
+    // File open and handle error
     FILE *file = fopen(filename, mode);
     if (file == NULL) {
         printf("Error: Could not find or open the file.\n");
         exit(1);
     }
-    printf("File successfully loaded.");
+    printf("File successfully loaded.\n");
     return file;
 }
 
-int totalrecords(FILE *inputfile)
+int readfile(FILE *inputfile, FITNESS_DATA *dataarray)
 {   
+    // Initialize Elements
+    char date[11], time[6], steps[10];
     char line[buffersize];
     int counter = 0;
+
     while (fgets(line, buffersize, inputfile))
-    {
+    {     
+        // Tokenise and put into data array
+        tokeniseRecord(line, ",", date, time, steps);
+        strcpy(dataarray[counter].date, date);
+        strcpy(dataarray[counter].time, time);
+        dataarray[counter].steps = atoi(steps);
+        // Increase count
         counter++;
     }
     return counter;
 }   
 
+int feweststeps(FITNESS_DATA *dataarray, int totalrecords)
+{
+    int lowest = 9999999;
+    int index;
+    for (int i = 0; i < totalrecords; i++)
+    {   
+        if (dataarray[i].steps < lowest)
+        {   
+            lowest = dataarray[i].steps;
+            index = i;
+        }
+    }
+    return index;
+}
+
+int largeststeps(FITNESS_DATA *dataarray, int totalrecords)
+{
+    int largest = 0;
+    int index;
+    for (int i = 0; i < totalrecords; i++)
+    {   
+        if (dataarray[i].steps > largest)
+        {   
+            largest = dataarray[i].steps;
+            index = i;
+        }
+    }
+    return index;
+}
+
+int meansteps(FITNESS_DATA *dataarray, int totalrecords)
+{
+    int total;
+    for (int i =  0; i < totalrecords; i++)
+    {
+        total += dataarray[i].steps;
+    }
+    return total/totalrecords;
+}
 
 // Complete the main function
 int main() 
 {
     char choice;
     int counter = 0;
-    int mean = 0;
-    int lowest = 999999;
-    int highest = 0;
+    int index;
+    int mean;
 
     while(1) 
     {
@@ -99,20 +146,29 @@ int main()
         
         case 'B':
         case 'b':
-            counter = totalrecords(file);
+            counter = readfile(file, dataarray);
             printf("Total records: %d\n", counter);
             break;
     
-        case 'C'
+        case 'C':
         case 'c':
+            counter = readfile(file, dataarray);
+            index = feweststeps(dataarray, counter);
+            printf("Fewest steps: %s %s\n", dataarray[index].date, dataarray[index].time);
             break;
         
         case 'D':
         case 'd':
+            counter = readfile(file, dataarray);
+            index = largeststeps(dataarray, counter);
+            printf("Largest steps: %s %s\n", dataarray[index].date, dataarray[index].time);
             break;
 
         case 'E':
         case 'e':
+            counter = readfile(file, dataarray);
+            mean = meansteps(dataarray, counter);
+            printf("Mean step count: %d", mean);
             break;
 
         case 'F':
