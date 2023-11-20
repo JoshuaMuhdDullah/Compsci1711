@@ -110,7 +110,6 @@ int meansteps(FITNESS_DATA *dataarray, int totalrecords)
     for (int i =  0; i < totalrecords; i++)
     {
         total = total + dataarray[i].steps;
-        printf("%d\n", total);
     }
     // Calculate mean
     mean = total/totalrecords;
@@ -182,38 +181,34 @@ int main()
             scanf("%s", filename);
 
             FILE *file = openfile(filename, "r");
+            counter = readfile(file, dataarray);
             break;
         
         case 'B':
         case 'b':
-            counter = readfile(file, dataarray);
             printf("Total records: %d\n", counter);
             break;
     
         case 'C':
         case 'c':
-            counter = readfile(file, dataarray);
             index = feweststeps(dataarray, counter);
             printf("Fewest steps: %s %s\n", dataarray[index].date, dataarray[index].time);
             break;
         
         case 'D':
         case 'd':
-            counter = readfile(file, dataarray);
             index = largeststeps(dataarray, counter);
             printf("Largest steps: %s %s\n", dataarray[index].date, dataarray[index].time);
             break;
 
         case 'E':
         case 'e':
-            counter = readfile(file, dataarray);
             mean = meansteps(dataarray, counter);
             printf("Mean step count: %d\n", mean);
             break;
 
         case 'F':
         case 'f':
-            counter = readfile(file, dataarray);
             maxstreak = longeststreak(dataarray, counter);
             printf("Longest period start: %s %s\n", dataarray[maxstreak.start].date, dataarray[maxstreak.start].time);
             printf("Longest period end: %s %s\n", dataarray[maxstreak.end-1].date, dataarray[maxstreak.end-1].time);

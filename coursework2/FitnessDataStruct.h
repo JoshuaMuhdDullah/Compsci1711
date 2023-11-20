@@ -8,7 +8,7 @@
 #include <math.h>
 
 // Declaring buffersize
-#define buffersize 100
+#define buffersize 1024
 
 // Define an appropriate struct
 typedef struct {
