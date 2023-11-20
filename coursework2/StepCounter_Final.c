@@ -127,23 +127,29 @@ POINTERS longeststreak(FITNESS_DATA *dataarray, int totalrecords)
     // Current streak and longest streak recorded
     int currentstreak = 0, topstreak = 0;
     // Loop through list counting streak
-    for (int i =  0; i < totalrecords; i++)
-    {    
-        start = i;
+    for (int i = 0; i < totalrecords; i++)
+    {   
+        currentstreak = 0;
+        if (dataarray[i].steps > 500)
+        {
+            start = i;
+        }
         while (dataarray[i].steps > 500)
         {   
-            currentstreak++;
-            end = i;
             i++;
+            currentstreak ++;
+            end = i;
         }
         if (currentstreak > topstreak)
         {
+            topstreak = currentstreak;
             maxstreak.start = start;
             maxstreak.end = end;
         }
-        return maxstreak;
     }
+    return maxstreak;
 }
+
 // Complete the main function
 int main() 
 {
@@ -208,9 +214,9 @@ int main()
         case 'F':
         case 'f':
             counter = readfile(file, dataarray);
-            longeststreak(dataarray, counter);
+            maxstreak = longeststreak(dataarray, counter);
             printf("Longest period start: %s %s\n", dataarray[maxstreak.start].date, dataarray[maxstreak.start].time);
-            printf("Longest period end: %s %s\n", dataarray[maxstreak.end].date, dataarray[maxstreak.end].time);
+            printf("Longest period end: %s %s\n", dataarray[maxstreak.end-1].date, dataarray[maxstreak.end-1].time);
             break;
 
         case 'Q':
