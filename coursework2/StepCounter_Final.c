@@ -105,11 +105,18 @@ int meansteps(FITNESS_DATA *dataarray, int totalrecords)
 {
     // Initialize elements
     int total = 0;
-    int mean;
+    float fmean;
     // Sum all steps
     for (int i =  0; i < totalrecords; i++)
     {
         total = total + dataarray[i].steps;
+    }
+    // Round mean
+    int mean;
+    mean = (int)fmean;
+    if (fmean-mean >= 0.5)
+    {
+        mean++;
     }
     // Calculate mean
     mean = total/totalrecords;
