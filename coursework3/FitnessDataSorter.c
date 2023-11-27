@@ -30,7 +30,6 @@ void tokeniseRecord(char *record, char delimiter, char *date, char *time, int *s
     }
 }
 
-
 // Function to open file
 FILE *openfile(char *filename, char *mode)
 {
@@ -48,34 +47,65 @@ FILE *openfile(char *filename, char *mode)
 int readfile(FILE *inputfile, FitnessData *dataarray)
 {   
     // Initialize Elements
-    char date[11], time[6], steps[10];
+    char date[11], time[6];
+    int steps[10];
+    
     char line[buffersize];
     int counter = 0;
 
     while (fgets(line, buffersize, inputfile))
     {     
         // Tokenise and put into data array
-        tokeniseRecord(line, ",", date, time, steps);
+        tokeniseRecord(line, ',', date, time, steps);
         strcpy(dataarray[counter].date, date);
         strcpy(dataarray[counter].time, time);
         dataarray[counter].steps = atoi(steps);
+
         // Increase count
         counter++;
     }
     return counter;
 }   
 
+// Sort function
+void bubbleSort(FitnessData *dataarray, int len)
+{   
+    FitnessData temp;
+    for (int i = 0; i < len - 1; i++)
+    {
+        for (int j = 0; j < len; j++)
+        {   
+            // if smaller swap
+            if (dataarray[j].steps < dataarray[j+1].steps)
+            {   
+                // preform swap
+                temp = dataarray[j];
+                dataarray[j] = dataarray[j+1];
+                dataarray[j+1] = temp;
+            }
+        }
+    }
+}
 
 int main() {
+    // Initialize variables
+    int NumRecords;
+
     // Ask user for filename
     printf("Enter Filename: ");
-    scanf("%c",filename);
+    scanf("%s",filename);
 
     // Open file using fucntion
-    FILE *file = openfile(filename, "r")
+    FILE *file = openfile(filename, "r");
     
     // Read file to array using functiom
-    NumRecords = readfile(file, DataArray)
+    NumRecords = readfile(file, DataArray);
 
     // Sort Array
+    bubbleSort(DataArray, NumRecords);
+
+    for (int i = 0; i < NumRecords; i++)
+    {
+        printf("%d\n", DataArray[i].steps);
+    }
 }
