@@ -64,10 +64,6 @@ int readfile(FILE *inputfile, FitnessData *dataarray)
         dataarray[counter].steps = steps;
 
         // Validate data
-        if (dataarray[counter].date == NULL || dataarray[counter].time == NULL || dataarray[counter].steps == 0)
-        {
-            return 1;
-        }
 
         // Increase count
         counter++;
@@ -95,6 +91,7 @@ void bubbleSort(FitnessData *dataarray, int len)
     }
 }
 
+
 int main() {
     // Initialize variables
     int NumRecords;
@@ -109,6 +106,15 @@ int main() {
     // Read file to array using functiom
     NumRecords = readfile(file, DataArray);
 
+    // Vaidate data
+    for (int i = 0; i < NumRecords; i++)
+    {
+        if (DataArray[i].date == NULL || DataArray[i].time == NULL || DataArray[i].steps == 0)
+        {   
+            return 1;
+        }
+    }
+
     // Sort Array
     bubbleSort(DataArray, NumRecords);
 
@@ -121,4 +127,6 @@ int main() {
         fprintf(newfile, "%s\t%s\t%i\n", DataArray[i].date, DataArray[i].time, DataArray[i].steps);
     }
     fclose(newfile);
+
+    return 0;
 }
