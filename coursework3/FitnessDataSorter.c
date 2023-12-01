@@ -48,7 +48,9 @@ int readfile(FILE *inputfile, FitnessData *dataarray)
 {   
     // Initialize Elements
     char date[11], time[6];
-    int steps[10];
+    int steps;
+    int *address;
+    address = &steps;
     
     char line[buffersize];
     int counter = 0;
@@ -56,10 +58,10 @@ int readfile(FILE *inputfile, FitnessData *dataarray)
     while (fgets(line, buffersize, inputfile))
     {     
         // Tokenise and put into data array
-        tokeniseRecord(line, ',', date, time, steps);
+        tokeniseRecord(line, ',', date, time, address);
         strcpy(dataarray[counter].date, date);
         strcpy(dataarray[counter].time, time);
-        dataarray[counter].steps = atoi(steps);
+        dataarray[counter].steps = steps;
 
         // Increase count
         counter++;
@@ -104,8 +106,13 @@ int main() {
     // Sort Array
     bubbleSort(DataArray, NumRecords);
 
+    fclose(file);
+
+    // Write to tsv file
+    FILE *newfile = fopen("mydata.csv.tsv", "w");
     for (int i = 0; i < NumRecords; i++)
-    {
-        printf("%d\n", DataArray[i].steps);
+    {   
+        fprintf(newfile, "%s\t%s\t%i\n", DataArray[i].date, DataArray[i].time, DataArray[i].steps);
     }
+    fclose(newfile);
 }
