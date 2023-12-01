@@ -63,6 +63,12 @@ int readfile(FILE *inputfile, FitnessData *dataarray)
         strcpy(dataarray[counter].time, time);
         dataarray[counter].steps = steps;
 
+        // Validate data
+        if (dataarray[counter].date == NULL || dataarray[counter].time == NULL || dataarray[counter].steps == 0)
+        {
+            return 1;
+        }
+
         // Increase count
         counter++;
     }
